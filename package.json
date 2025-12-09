@@ -1,0 +1,18 @@
+{
+  "name": "blockchain-learning-material",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple Hardhat setup with a minimal Solidity contract for local/testnet experimentation.",
+  "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deploy.js --network localhost"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.1"
+  }
+}
