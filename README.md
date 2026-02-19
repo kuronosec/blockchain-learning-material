@@ -4,19 +4,57 @@ Minimal Hardhat setup with a single `SimpleStorage` contract for local or testne
 
 ## Prerequisites
 - Node.js 18+
-- npm
+- Yarn
+- Git
+
+## Install Git and Yarn
+### Ubuntu / Debian
+```bash
+sudo apt update
+sudo apt install -y git curl
+curl -o- -L https://yarnpkg.com/install.sh | bash
+```
+
+### macOS (Homebrew)
+```bash
+brew install git yarn
+```
+
+### Windows (winget)
+```powershell
+winget install --id Git.Git -e
+winget install --id Yarn.Yarn -e
+```
 
 ## Setup
 ```bash
-npm install
+yarn install
 ```
 
+## Run a local Ethereum node
+1. Install dependencies:
+```bash
+yarn setup
+```
+2. Start local node (keep this terminal open):
+```bash
+yarn local:node
+```
+3. In another terminal, deploy to local node:
+```bash
+yarn local:deploy
+```
+
+Hardhat local JSON-RPC endpoint: `http://127.0.0.1:8545` (chain id `31337`).
+
 ## Useful scripts
-- `npx hardhat compile` – build the contracts.
-- `npx hardhat test` – run sample tests.
-- `npx hardhat node` – start a local JSON-RPC node.
-- `npm run deploy` – deploy `SimpleStorage` to the local node (run the node first).
-- `npx hardhat run scripts/deploy.js --network sepolia` – deploy to Sepolia after setting `.env`.
+- `yarn hardhat compile` – build the contracts.
+- `yarn hardhat test` – run sample tests.
+- `yarn hardhat node` – start a local JSON-RPC node.
+- `yarn deploy` – deploy `SimpleStorage` to the local node (run the node first).
+- `yarn local:node` – start local node on `127.0.0.1:8545`.
+- `yarn local:deploy` – deploy `SimpleStorage` to local node.
+- `yarn hardhat run scripts/deploy.js --network sepolia` – deploy to Sepolia after setting `.env`.
 
 ## Configure testnet (optional)
 Copy `.env.example` to `.env` and fill:
