@@ -12,6 +12,7 @@
     "node": "hardhat node",
     "local:node": "hardhat node --hostname 127.0.0.1 --port 8545",
     "local:deploy": "hardhat run scripts/deploy.js --network localhost",
+    "local:interact": "HARDHAT_NETWORK=localhost node scripts/interact.js",
     "deploy": "hardhat run scripts/deploy.js --network localhost"
   },
   "devDependencies": {

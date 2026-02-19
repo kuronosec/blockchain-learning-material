@@ -44,6 +44,10 @@ yarn local:node
 ```bash
 yarn local:deploy
 ```
+4. Interact with deployed contract (replace with your deployed address):
+```bash
+yarn local:interact <CONTRACT_ADDRESS> [NEW_VALUE]
+```
 
 Hardhat local JSON-RPC endpoint: `http://127.0.0.1:8545` (chain id `31337`).
 
@@ -54,6 +58,7 @@ Hardhat local JSON-RPC endpoint: `http://127.0.0.1:8545` (chain id `31337`).
 - `yarn deploy` – deploy `SimpleStorage` to the local node (run the node first).
 - `yarn local:node` – start local node on `127.0.0.1:8545`.
 - `yarn local:deploy` – deploy `SimpleStorage` to local node.
+- `yarn local:interact <CONTRACT_ADDRESS> [NEW_VALUE]` – read and update `SimpleStorage` on local node.
 - `yarn hardhat run scripts/deploy.js --network sepolia` – deploy to Sepolia after setting `.env`.
 
 ## Configure testnet (optional)
