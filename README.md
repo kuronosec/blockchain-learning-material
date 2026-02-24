@@ -26,6 +26,34 @@ winget install --id Git.Git -e
 winget install --id Yarn.Yarn -e
 ```
 
+## Add Yarn and Hardhat to terminal commands
+If you get `command not found` for `yarn` or `hardhat`, add them to your shell `PATH`.
+
+### Linux / macOS (bash or zsh)
+```bash
+echo 'export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+For bash, replace `~/.zshrc` with `~/.bashrc`.
+
+To use local `hardhat` directly in the current project terminal:
+```bash
+export PATH="$(pwd)/node_modules/.bin:$PATH"
+```
+
+### Windows (PowerShell)
+```powershell
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$HOME\\AppData\\Local\\Yarn\\bin", "User")
+```
+Then restart the terminal.
+
+### Verify
+```bash
+yarn --version
+yarn hardhat --version
+```
+
 ## Setup
 ```bash
 yarn install
