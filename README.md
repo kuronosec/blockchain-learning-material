@@ -59,6 +59,8 @@ yarn hardhat --version
 yarn install
 ```
 
+If you are on Windows, this install step is required before `yarn local:interact` so `cross-env` is available.
+
 ## Run a local Ethereum node
 1. Install dependencies:
 ```bash

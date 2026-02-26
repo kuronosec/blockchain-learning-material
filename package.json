@@ -12,13 +12,14 @@
     "node": "hardhat node",
     "local:node": "hardhat node --hostname 127.0.0.1 --port 8545",
     "local:deploy": "hardhat run scripts/deploy.js --network localhost",
-    "local:interact": "HARDHAT_NETWORK=localhost node scripts/interact.js",
+    "local:interact": "cross-env HARDHAT_NETWORK=localhost node scripts/interact.js",
     "deploy": "hardhat run scripts/deploy.js --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "chai": "^4.5.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.5",
     "hardhat": "^2.22.1"
