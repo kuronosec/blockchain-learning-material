@@ -12,8 +12,10 @@
     "node": "hardhat node",
     "local:node": "hardhat node --hostname 127.0.0.1 --port 8545",
     "local:deploy": "hardhat run scripts/deploy.js --network localhost",
-    "local:interact": "cross-env HARDHAT_NETWORK=localhost node scripts/interact.js",
-    "deploy": "hardhat run scripts/deploy.js --network localhost"
+    "local:interact": "HARDHAT_NETWORK=localhost node scripts/interact.js",
+    "deploy": "hardhat run scripts/deploy.js --network localhost",
+    "local:voting:deploy": "hardhat run scripts/deploy-voting.js --network localhost",
+    "local:voting:interact": "HARDHAT_NETWORK=localhost node scripts/interact-voting.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",

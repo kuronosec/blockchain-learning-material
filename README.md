@@ -59,7 +59,7 @@ yarn hardhat --version
 yarn install
 ```
 
-If you are on Windows, this install step is required before `yarn local:interact` so `cross-env` is available.
+If you are on Windows, this install step is required before `yarn local:interact` or `yarn local:voting:interact` so `cross-env` is available.
 
 ## Run a local Ethereum node
 1. Install dependencies:
@@ -81,6 +81,31 @@ yarn local:interact <CONTRACT_ADDRESS> [NEW_VALUE]
 
 Hardhat local JSON-RPC endpoint: `http://127.0.0.1:8545` (chain id `31337`).
 
+## Use the Voting contract locally
+1. Make sure your local node is running:
+```bash
+yarn local:node
+```
+2. In another terminal, deploy `Voting` with default candidates (`Alice,Bob`):
+```bash
+yarn local:voting:deploy
+```
+Or deploy with custom candidates:
+Linux / macOS:
+```bash
+CANDIDATES="Alice,Bob,Charlie" yarn local:voting:deploy
+```
+Windows PowerShell:
+```powershell
+$env:CANDIDATES="Alice,Bob,Charlie"; yarn local:voting:deploy
+```
+3. Interact with deployed contract (replace with your deployed address):
+```bash
+yarn local:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]
+```
+
+The interact script prints current results, checks whether the current signer already voted, and submits a vote if not.
+
 ## Useful scripts
 - `yarn hardhat compile` – build the contracts.
 - `yarn hardhat test` – run sample tests.
@@ -89,6 +114,8 @@ Hardhat local JSON-RPC endpoint: `http://127.0.0.1:8545` (chain id `31337`).
 - `yarn local:node` – start local node on `127.0.0.1:8545`.
 - `yarn local:deploy` – deploy `SimpleStorage` to local node.
 - `yarn local:interact <CONTRACT_ADDRESS> [NEW_VALUE]` – read and update `SimpleStorage` on local node.
+- `CANDIDATES="Alice,Bob,Charlie" yarn local:voting:deploy` – deploy `Voting` to local node with optional candidate list.
+- `yarn local:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]` – view results and cast a vote from the current signer.
 - `yarn hardhat run scripts/deploy.js --network sepolia` – deploy to Sepolia after setting `.env`.
 
 ## Configure testnet (optional)
