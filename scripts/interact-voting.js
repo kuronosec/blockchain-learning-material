@@ -26,7 +26,7 @@ async function main() {
 
   if (!contractAddress) {
     throw new Error(
-      "Missing contract address. Usage: yarn local:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]"
+      "Missing contract address. Usage: node scripts/interact-voting.js <CONTRACT_ADDRESS> [CANDIDATE_INDEX]"
     );
   }
 

@@ -6,7 +6,7 @@ async function main() {
 
   if (!contractAddress) {
     throw new Error(
-      "Missing contract address. Usage: yarn local:interact <CONTRACT_ADDRESS> [NEW_VALUE]"
+      "Missing contract address. Usage: node scripts/interact.js <CONTRACT_ADDRESS> [NEW_VALUE]"
     );
   }
 

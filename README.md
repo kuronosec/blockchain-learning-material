@@ -1,6 +1,6 @@
 # Blockchain Learning Material
 
-Minimal Hardhat setup with a single `SimpleStorage` contract for local or testnet practice.
+Minimal Hardhat setup with `SimpleStorage` and `Voting` contracts for local or testnet practice.
 
 ## Prerequisites
 - Node.js 18+
@@ -59,7 +59,7 @@ yarn hardhat --version
 yarn install
 ```
 
-If you are on Windows, this install step is required before `yarn local:interact` or `yarn local:voting:interact` so `cross-env` is available.
+If you are on Windows, this install step is required before any `*:interact` script so `cross-env` is available.
 
 ## Run a local Ethereum node
 1. Install dependencies:
@@ -106,6 +106,38 @@ yarn local:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]
 
 The interact script prints current results, checks whether the current signer already voted, and submits a vote if not.
 
+## Deploy and interact on Polygon Amoy (both contracts)
+1. Copy `.env.example` to `.env` and set:
+```bash
+AMOY_RPC_URL=https://polygon-amoy.infura.io/v3/YOUR_KEY
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+```
+2. Deploy `SimpleStorage`:
+```bash
+yarn amoy:simple:deploy
+```
+3. Interact with `SimpleStorage` (replace with deployed address):
+```bash
+yarn amoy:simple:interact <CONTRACT_ADDRESS> [NEW_VALUE]
+```
+4. Deploy `Voting` (defaults to `Alice,Bob`):
+```bash
+yarn amoy:voting:deploy
+```
+Or with custom candidates:
+Linux / macOS:
+```bash
+CANDIDATES="Alice,Bob,Charlie" yarn amoy:voting:deploy
+```
+Windows PowerShell:
+```powershell
+$env:CANDIDATES="Alice,Bob,Charlie"; yarn amoy:voting:deploy
+```
+5. Interact with `Voting`:
+```bash
+yarn amoy:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]
+```
+
 ## Useful scripts
 - `yarn hardhat compile` – build the contracts.
 - `yarn hardhat test` – run sample tests.
@@ -116,13 +148,36 @@ The interact script prints current results, checks whether the current signer al
 - `yarn local:interact <CONTRACT_ADDRESS> [NEW_VALUE]` – read and update `SimpleStorage` on local node.
 - `CANDIDATES="Alice,Bob,Charlie" yarn local:voting:deploy` – deploy `Voting` to local node with optional candidate list.
 - `yarn local:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]` – view results and cast a vote from the current signer.
+- `yarn amoy:simple:deploy` – deploy `SimpleStorage` to Polygon Amoy.
+- `yarn amoy:simple:interact <CONTRACT_ADDRESS> [NEW_VALUE]` – read and update `SimpleStorage` on Polygon Amoy.
+- `CANDIDATES="Alice,Bob,Charlie" yarn amoy:voting:deploy` – deploy `Voting` to Polygon Amoy with optional candidate list.
+- `yarn amoy:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]` – view results and cast a vote on Polygon Amoy.
 - `yarn hardhat run scripts/deploy.js --network sepolia` – deploy to Sepolia after setting `.env`.
+- `yarn amoy:send-pol 0xRecipient1,0xRecipient2` – send `2 POL` to each recipient on Polygon Amoy.
 
 ## Configure testnet (optional)
 Copy `.env.example` to `.env` and fill:
 - `SEPOLIA_RPC_URL`
+- `AMOY_RPC_URL` (for Polygon Amoy scripts)
 - `PRIVATE_KEY`
 - `ETHERSCAN_API_KEY` (only if you want verification)
+
+## Send 2 POL on Polygon Amoy to multiple recipients
+1. Ensure `.env` includes:
+```bash
+AMOY_RPC_URL=https://polygon-amoy.infura.io/v3/YOUR_KEY
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+```
+2. Run:
+```bash
+yarn amoy:send-pol 0xRecipient1,0xRecipient2,0xRecipient3
+```
+Or with env var:
+```bash
+RECIPIENTS=0xRecipient1,0xRecipient2 yarn amoy:send-pol
+```
+
+The script sends exactly `2 POL` to each address sequentially and waits for each transaction confirmation.
 
 ## What the contract does
 `contracts/SimpleStorage.sol` stores a single `uint256` value. Call `set(newValue)` to update and `get()` to read it. Each update emits `ValueUpdated`.
