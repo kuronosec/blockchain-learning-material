@@ -20,6 +20,7 @@
     "amoy:simple:interact": "cross-env HARDHAT_NETWORK=amoy node scripts/interact.js",
     "amoy:voting:deploy": "hardhat run scripts/deploy-voting.js --network amoy",
     "amoy:voting:interact": "cross-env HARDHAT_NETWORK=amoy node scripts/interact-voting.js",
+    "ui:voting": "node scripts/serve-voting-ui.js",
     "amoy:send-pol": "hardhat run scripts/send-pol-amoy.js --network amoy"
   },
   "devDependencies": {

@@ -138,6 +138,25 @@ $env:CANDIDATES="Alice,Bob,Charlie"; yarn amoy:voting:deploy
 yarn amoy:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]
 ```
 
+## Simple web UI for Voting (MetaMask)
+The project includes a minimal frontend at `web/voting` to interact with `Voting` using MetaMask.
+
+1. Deploy `Voting` to Amoy and copy the contract address:
+```bash
+yarn amoy:voting:deploy
+```
+2. Start the Node.js static server from the project root:
+```bash
+yarn ui:voting
+```
+3. Open `http://127.0.0.1:3000`
+4. In the page:
+- Click `Connect MetaMask`
+- Click `Switch to Amoy`
+- Paste your deployed Voting address
+- Click `Load Contract`
+- Vote using one of the candidate buttons
+
 ## Useful scripts
 - `yarn hardhat compile` – build the contracts.
 - `yarn hardhat test` – run sample tests.
@@ -152,6 +171,7 @@ yarn amoy:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]
 - `yarn amoy:simple:interact <CONTRACT_ADDRESS> [NEW_VALUE]` – read and update `SimpleStorage` on Polygon Amoy.
 - `CANDIDATES="Alice,Bob,Charlie" yarn amoy:voting:deploy` – deploy `Voting` to Polygon Amoy with optional candidate list.
 - `yarn amoy:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]` – view results and cast a vote on Polygon Amoy.
+- `yarn ui:voting` – run local Node.js web UI server for Voting dApp.
 - `yarn hardhat run scripts/deploy.js --network sepolia` – deploy to Sepolia after setting `.env`.
 - `yarn amoy:send-pol 0xRecipient1,0xRecipient2` – send `2 POL` to each recipient on Polygon Amoy.
 
