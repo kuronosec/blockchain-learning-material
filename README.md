@@ -138,7 +138,7 @@ $env:CANDIDATES="Alice,Bob,Charlie"; yarn amoy:voting:deploy
 yarn amoy:voting:interact <CONTRACT_ADDRESS> [CANDIDATE_INDEX]
 ```
 
-## Simple web UI for Voting (MetaMask)
+## Simple web UI for Voting
 The project includes a minimal frontend at `web/voting` to interact with `Voting` using MetaMask.
 
 1. Deploy `Voting` to Amoy and copy the contract address:
