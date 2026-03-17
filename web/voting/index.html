@@ -147,6 +147,19 @@
       </div>
 
       <div class="card">
+        <h2>SSI DID Demo</h2>
+        <p>Generate a simple `did:pkh` identifier from your wallet and sign a proof message.</p>
+        <div class="row">
+          <button id="generateDidBtn" class="secondary">Generate DID</button>
+          <button id="signDidProofBtn">Sign DID Proof</button>
+        </div>
+        <p><strong>DID:</strong> <span id="didValue">Not generated</span></p>
+        <p><strong>Challenge:</strong> <span id="didChallenge">Not generated</span></p>
+        <p><strong>Verification:</strong> <span id="didVerification">Not verified</span></p>
+        <p><strong>Signature:</strong> <span id="didSignature">Not signed</span></p>
+      </div>
+
+      <div class="card">
         <p id="status" class="status">Ready.</p>
       </div>
     </div>

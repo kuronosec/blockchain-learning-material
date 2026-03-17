@@ -1,5 +1,6 @@
 const AMOY_CHAIN_ID_HEX = "0x13882";
 const STORAGE_KEY = "voting_contract_address";
+const DID_METHOD = "did:pkh:eip155:80002";
 
 const VOTING_ABI = [
   "function getCandidatesCount() view returns (uint256)",
@@ -12,7 +13,8 @@ const state = {
   provider: null,
   signer: null,
   contract: null,
-  account: null
+  account: null,
+  did: null
 };
 
 const ui = {
@@ -20,11 +22,17 @@ const ui = {
   switchAmoyBtn: document.getElementById("switchAmoyBtn"),
   refreshBtn: document.getElementById("refreshBtn"),
   loadContractBtn: document.getElementById("loadContractBtn"),
+  generateDidBtn: document.getElementById("generateDidBtn"),
+  signDidProofBtn: document.getElementById("signDidProofBtn"),
   account: document.getElementById("account"),
   network: document.getElementById("network"),
   hasVoted: document.getElementById("hasVoted"),
   contractAddress: document.getElementById("contractAddress"),
   candidates: document.getElementById("candidates"),
+  didValue: document.getElementById("didValue"),
+  didChallenge: document.getElementById("didChallenge"),
+  didVerification: document.getElementById("didVerification"),
+  didSignature: document.getElementById("didSignature"),
   status: document.getElementById("status")
 };
 
@@ -40,6 +48,27 @@ function shortenAddress(address) {
 
 function resetCandidates() {
   ui.candidates.innerHTML = "";
+}
+
+function resetDidDemo() {
+  state.did = null;
+  ui.didValue.textContent = "Not generated";
+  ui.didChallenge.textContent = "Not generated";
+  ui.didVerification.textContent = "Not verified";
+  ui.didSignature.textContent = "Not signed";
+}
+
+function createDid(address) {
+  return `${DID_METHOD}:${address.toLowerCase()}`;
+}
+
+function createDidChallenge() {
+  return `Voting DApp SSI proof at ${new Date().toISOString()}`;
+}
+
+function shortenSignature(signature) {
+  if (!signature || signature.length < 18) return signature || "Not signed";
+  return `${signature.slice(0, 12)}...${signature.slice(-10)}`;
 }
 
 async function updateNetworkLabel() {
@@ -67,6 +96,7 @@ async function connectWallet() {
 
   ui.account.textContent = shortenAddress(state.account);
   await updateNetworkLabel();
+  resetDidDemo();
   setStatus("Wallet connected.");
 }
 
@@ -110,6 +140,55 @@ async function updateHasVoted() {
 
   const voted = await state.contract.hasAddressVoted(state.account);
   ui.hasVoted.textContent = voted ? "Yes" : "No";
+}
+
+async function generateDid() {
+  try {
+    await ensureConnected();
+    state.did = createDid(state.account);
+    ui.didValue.textContent = state.did;
+    ui.didChallenge.textContent = createDidChallenge();
+    ui.didVerification.textContent = "Awaiting signature";
+    ui.didSignature.textContent = "Not signed";
+    setStatus("DID generated from connected wallet.");
+  } catch (error) {
+    setStatus(error.reason || error.message, true);
+  }
+}
+
+async function signDidProof() {
+  try {
+    await ensureConnected();
+
+    if (!state.did) {
+      await generateDid();
+    }
+
+    const challenge = ui.didChallenge.textContent;
+    const proofPayload = JSON.stringify(
+      {
+        did: state.did,
+        challenge,
+        statement: "I control this wallet-backed DID for the Voting DApp demo."
+      },
+      null,
+      2
+    );
+
+    setStatus("Requesting wallet signature for DID proof...");
+    const signature = await state.signer.signMessage(proofPayload);
+    const recoveredAddress = ethers.verifyMessage(proofPayload, signature);
+    const verified = recoveredAddress.toLowerCase() === state.account.toLowerCase();
+
+    ui.didSignature.textContent = shortenSignature(signature);
+    ui.didVerification.textContent = verified
+      ? `Verified for ${shortenAddress(recoveredAddress)}`
+      : "Verification failed";
+
+    setStatus(verified ? "DID proof signed and verified." : "DID proof verification failed.", !verified);
+  } catch (error) {
+    setStatus(error.reason || error.message, true);
+  }
 }
 
 async function vote(candidateIndex) {
@@ -183,6 +262,8 @@ function bindEvents() {
   ui.connectBtn.addEventListener("click", connectWallet);
   ui.switchAmoyBtn.addEventListener("click", switchToAmoy);
   ui.loadContractBtn.addEventListener("click", loadContract);
+  ui.generateDidBtn.addEventListener("click", generateDid);
+  ui.signDidProofBtn.addEventListener("click", signDidProof);
   ui.refreshBtn.addEventListener("click", async () => {
     try {
       await updateNetworkLabel();
@@ -202,11 +283,13 @@ function bindEvents() {
       ui.account.textContent = "Not connected";
       ui.hasVoted.textContent = "Unknown";
       resetCandidates();
+      resetDidDemo();
       setStatus("Account changed. Reconnect wallet.");
     });
 
     window.ethereum.on("chainChanged", async () => {
       await updateNetworkLabel();
+      resetDidDemo();
       setStatus("Network changed.");
     });
   }
@@ -217,6 +300,7 @@ function init() {
   if (saved) {
     ui.contractAddress.value = saved;
   }
+  resetDidDemo();
   bindEvents();
 }
 

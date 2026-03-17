@@ -156,6 +156,9 @@ yarn ui:voting
 - Paste your deployed Voting address
 - Click `Load Contract`
 - Vote using one of the candidate buttons
+- Optionally test the SSI demo by clicking `Generate DID` and `Sign DID Proof`
+
+The SSI section demonstrates a simple wallet-backed DID using the `did:pkh` format and a signed proof message verified in the browser.
 
 ## Useful scripts
 - `yarn hardhat compile` – build the contracts.
